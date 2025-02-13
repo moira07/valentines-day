@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>14 Şubat Sürprizi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffccd5;
+            color: #d6336c;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+        }
+        .character {
+            width: 200px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            transition: all 0.5s ease;
+        }
+        .buttons {
+            margin-top: 20px;
+            display: inline-block;
+        }
+        .buttons button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+        #yesBtn {
+            background-color: #ff4d6d;
+            color: white;
+        }
+        #noBtn {
+            position: absolute;
+            background-color: #6c757d;
+            color: white;
+        }
+        /* Evet butonuna animasyon ekliyoruz */
+        #yesBtn:hover {
+            transform: scale(1.1);  /* Hover olduğunda biraz büyüsün */
+        }
+        .heart {
+            position: absolute;
+            color: red;
+            font-size: 24px;
+            animation: float 2s linear infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>14 Şubat'ı benimle geçirir misin? 💖</h2>
+        <img id="character" class="character" src="character_asking.jpg" alt="Karakter">
+        <div class="buttons">
+            <button id="yesBtn" onclick="accept()">Evet</button>
+            <button id="noBtn" onmouseover="moveNoButton()">Hayır</button>
+        </div>
+    </div>
+
+    <!-- Şarkı Ekleme -->
+    <audio id="backgroundMusic" controls autoplay loop>
+        <source src="motive_nereden.mp3" type="audio/mp3">
+        Tarayıcınız audio etiketini desteklemiyor.
+    </audio>
+
+    <script>
+        function moveNoButton() {
+            let maxX = window.innerWidth - 100; // Ekran genişliği ve buton genişliği
+            let maxY = window.innerHeight - 50; // Ekran yüksekliği ve buton yüksekliği
+            
+            // x ve y'yi rastgele seçiyoruz, ancak ekran dışına çıkmamasını sağlıyoruz
+            let x = Math.random() * maxX;
+            let y = Math.random() * maxY;
+
+            // Butonun ekran dışına çıkmaması için ekran sınırlarına göre kontrol edelim
+            if (x < 0) x = 0;
+            if (y < 0) y = 0;
+
+            let noBtn = document.getElementById("noBtn");
+            noBtn.style.left = x + "px";  // Yalnızca konumu değiştiriyoruz, kaybolmasını engelliyoruz
+            noBtn.style.top = y + "px";
+            document.getElementById("character").src = "character_peeking.jpg";  // Karakter değişiyor
+        }
+
+        function accept() {
+            let character = document.getElementById("character");
+            character.style.opacity = 0;  // Görselin opaklığını azaltıyoruz geçiş için
+
+            setTimeout(() => {
+                // Görseli ve metni değiştiriyoruz, şarkıyı koruyarak
+                document.querySelector(".container").innerHTML = "<img src='character_celebrating.jpg' class='character'><h1>Sonsuza kadar birlikteyiz artık, geri dönüş yok! 💍😈</h1>";
+
+                startHearts();
+
+            }, 500);  // 0.5 saniyelik geçiş süresi, opaklık kaybolmadan sonra görsel geçişi yapılacak
+        }
+        
+        function startHearts() {
+            setInterval(() => {
+                let heart = document.createElement("div");
+                heart.innerHTML = "❤️";
+                heart.classList.add("heart");
+                heart.style.left = Math.random() * window.innerWidth + "px";
+                heart.style.top = window.innerHeight + "px";
+                document.body.appendChild(heart);
+                setTimeout(() => { heart.remove(); }, 2000);
+            }, 200);
+        }
+    </script>
+</body>
+</html>
